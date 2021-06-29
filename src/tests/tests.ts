@@ -1,5 +1,12 @@
 import { add, sqrtNewton, sqrtFromISqrt, sqrtNewtonMultiplyOnly } from "../betterMath";
 import "./Extended QUnit"
+import "./WebKitMathTests"
+
+QUnit.module("betterMath", () => {
+	QUnit.test("math overwrite", assert => {
+		assert.ok((<any>Math).isBetterMath)
+	});
+});
 
 
 QUnit.module("add", () => {
@@ -12,11 +19,11 @@ QUnit.module("add", () => {
 QUnit.module("sqrt", () => {
 
 	function sqrtTests(sqrt: (value: number, iterationCount?: number) => number) {
-		QUnit.test("compare with Math.sqrt", assert => {
+		QUnit.test("compare with OldMath.sqrt", assert => {
 			let maxDifference = 0
 			for (let i = 0; i < 100_000; i+=1_000) {
-				const difference = assert.approximately(sqrt(i), Math.sqrt(i), 6e-14, "sqrt(" + i + ")")
-				maxDifference = Math.max(maxDifference, difference)
+				const difference = assert.approximately(sqrt(i), OldMath.sqrt(i), 6e-14, "sqrt(" + i + ")")
+				maxDifference = OldMath.max(maxDifference, difference)
 			}
 			assert.approximately(maxDifference, 0, 6e-14, "max difference")
 		})
@@ -47,8 +54,8 @@ QUnit.module("sqrt", () => {
 
 	([
 		["newton", sqrtNewton],
-		//["newton multiply only", sqrtNewtonMultiplyOnly],
-		//["sqrtFromISqrt", sqrtFromISqrt]
+		["newton multiply only", sqrtNewtonMultiplyOnly],
+		["sqrtFromISqrt", sqrtFromISqrt]
 	] as (readonly [string, (value: number) => number])[]).forEach(sqrtObject => {
 		QUnit.module(sqrtObject[0], () => {
 			sqrtTests(sqrtObject[1])

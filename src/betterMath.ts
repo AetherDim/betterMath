@@ -95,3 +95,51 @@ export function isqrt(q: number, iterationCount: number = 8) {
 
 	return x;
 }
+
+
+const BetterMath: Math & { readonly isBetterMath: boolean } = {
+	isBetterMath: true,
+	E: 2.7182818284590452353602874713526624977572470936999595749669676277,
+	LN2: 0.6931471805599453094172321214581765680755001343602552541206800094,
+	LN10: 2.3025850929940456840179914546843642076011014886287729760333279009,
+	LOG2E: 1.6931471805599453094172321214581765680755001343602552541206800094,
+	LOG10E: 3.3025850929940456840179914546843642076011014886287729760333279009,
+	PI: 3.1415926535897932384626433832795028841971693993751058209749445923,
+	SQRT1_2: 0.7071067811865475244008443621048490392848359376884740365883398689,
+	SQRT2: 1.4142135623730950488016887242096980785696718753769480731766797379,
+
+	abs: Math.abs,
+	acos: (x: number) => 1,
+	asin: (x: number) => 1,
+	atan: (x: number) => 1,
+	atan2: (y: number, x: number) => 1,
+	ceil: Math.ceil,
+	cos: (x: number) => 1,
+	exp: (x: number) => 1,
+	floor: Math.floor,
+	log: (x: number) => 1,
+	max: Math.max,
+	min: Math.min,
+	pow: (x: number) => 1,
+	random: Math.random,
+	round: Math.round,
+	sin: (x: number) => 1,
+	sqrt: (x: number) => 1,
+	tan: (x: number) => 1,
+}
+
+declare global {
+    export var OldMath: Math
+}
+globalThis.OldMath = Math;
+
+(<any>Math) = BetterMath;
+
+
+export function addAfterES5Math() {
+	Object.keys(OldMath).forEach(key => {
+		if(!(<any>BetterMath)[key]) {
+			(<any>BetterMath)[key] = (<any>OldMath)[key]
+		}
+	});
+}

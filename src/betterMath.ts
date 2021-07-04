@@ -212,8 +212,8 @@ const BetterMath: Math & { readonly isBetterMath: boolean } = {
 	log2: (x: number) => 1,
 	log1p: (x: number) => 1,
 	expm1: (x: number) => 1,
-	cosh: (x: number) => 1,
-	sinh: (x: number) => 1,
+	cosh: cosh,
+	sinh: sinh,
 	tanh: (x: number) => 1,
 	acosh: (x: number) => 1,
 	asinh: (x: number) => 1,
@@ -222,6 +222,10 @@ const BetterMath: Math & { readonly isBetterMath: boolean } = {
 	trunc: (x: number) => 1,
 	fround: (x: number) => 1,
 	cbrt: (x: number) => 1,
+
+	get [Symbol.toStringTag]() {
+		return 'Math';
+	},
 
 	abs: Math.abs,
 	acos: (x: number) => 1,
